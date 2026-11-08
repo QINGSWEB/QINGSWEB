@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QINGS.WEB — Belajar Bahasa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@500;600;700&display=swap">
+<style>
+:root{--bg:#080808;--card:#141414;--line:#262626;--tx:#f2f2f2;--mu:#9a9a9a;--ac:#ff5a36;--ok:#3ddc97;--bad:#ff5d6c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f6f4;--card:#fff;--line:#dcdcd8;--tx:#141414;--mu:#666;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#080808;--card:#141414;--line:#262626;--tx:#f2f2f2;--mu:#9a9a9a}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-size:20px;font-weight:500;line-height:1.5}
+main{max-width:760px;margin:0 auto;padding:20px 18px 60px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;font-size:15px;color:var(--mu);letter-spacing:.08em}
+header b{color:var(--tx);letter-spacing:.2em}
+button{font:inherit;color:inherit;cursor:pointer}
+.ghost{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--mu)}
+h1{font-family:"Cinzel Decorative","Cinzel",Georgia,serif;font-size:clamp(22px,4.6vw,30px);font-weight:700;letter-spacing:.02em;margin:0 0 8px;line-height:1.2}
+.sub{color:var(--mu);font-size:22px;font-style:italic;margin:0 0 26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:left;transition:transform .2s,border-color .2s}
+.opt:hover{border-color:var(--ac);transform:translateY(-2px)}
+.opt small{display:block;color:var(--mu);font-size:16px;margin-top:4px}
+.opt .n{color:var(--ac);font-size:12px;letter-spacing:.1em}
+.rm *{transition:none!important;animation:none!important}
+.tabs{display:flex;gap:6px;margin:18px 0}
+.tab{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:14px}
+.tab[aria-selected=true]{background:var(--ac);border-color:var(--ac);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:12px}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--ac);transition:width .4s}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.word{font-family:"Cinzel",Georgia,serif;font-size:40px;font-weight:700;margin:6px 0}
+.ans{display:grid;gap:8px;margin-top:12px}
+.ans button{background:transparent;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:left}
+.ans button.ok{border-color:var(--ok);background:rgba(61,220,151,.12)}
+.ans button.bad{border-color:var(--bad);background:rgba(255,93,108,.12)}
+input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--tx);font:inherit}
+.mu{color:var(--mu);font-size:16px}.done{color:var(--ok)}
+header b,.opt b,.tab,.lvl{font-family:"Cinzel",Georgia,serif;letter-spacing:.06em}
+.opt b{font-size:17px}.tab{font-size:15px}.lvl{font-size:13px}
+[dir=rtl]{font-family:"Amiri",serif}
+.lvl{display:inline-block;background:var(--ac);color:#fff;border-radius:999px;padding:2px 10px;font-size:12px}
+.save{background:none;border:0;font-size:18px;color:var(--mu)}.save.on{color:var(--ac)}
+ol{padding-left:20px;margin:0}li{padding:8px 0;border-bottom:1px solid var(--line)}
+.tabs{overflow-x:auto;scrollbar-width:none}.tab{flex:0 0 auto;padding:10px 16px;white-space:nowrap}
+.dict{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.dict .card{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.ar{font-family:"Amiri",serif;font-size:30px;line-height:1.4}
+.lb{display:block;color:var(--ac);font-size:13px;letter-spacing:.1em;margin:12px 0 4px}
+</style></head><body>
+<main id="app"></main>
+<script>
+const WORDS={
+ar:{name:"Bahasa Arab",list:[["كتاب","kitāb","buku"],["ماء","mā’","air"],["بيت","bait","rumah"],["شمس","syams","matahari"],["قمر","qamar","bulan"],["صديق","shadīq","teman"],["مدرسة","madrasah","sekolah"],["طعام","ṭa‘ām","makanan"],["شكرا","syukran","terima kasih"],["قلم","qalam","pena"],["سلام","salām","damai"],["علم","‘ilm","ilmu"]]},
+en:{name:"Bahasa Inggris",list:[["friend","","teman"],["water","","air"],["house","","rumah"],["knowledge","","ilmu"],["journey","","perjalanan"],["improve","","memperbaiki"],["challenge","","tantangan"],["goal","","tujuan"],["effort","","usaha"],["brave","","berani"],["forget","","lupa"],["borrow","","meminjam"]]}};
+const MENU=[["ar","Bahasa Arab","Pengenalan, kamus, latihan, misi"],["en","Bahasa Inggris","Pengenalan, kamus, latihan, misi"],["about","Tentang","Apa itu QINGS.WEB"],["more","Lainnya","Segera hadir"]];
+const LV=[[0,"Pemula"],[50,"Dasar"],[150,"Menengah"],[300,"Mahir"],[500,"Master"]];
+const TABS=[["intro","Pengenalan"],["kamus","Kamus"],["latihan","Latihan"],["misi","Misi"],["ranking","Ranking"]];
+const INTRO={ar:[["Apa itu Bahasa Arab?","Bahasa Arab adalah bahasa Semit yang dituturkan ratusan juta orang di Timur Tengah dan Afrika Utara. Ia juga bahasa Al-Qur’an dan salah satu bahasa resmi PBB."],["Huruf dan arah tulisan","Ditulis dari kanan ke kiri dengan 28 huruf hijaiyah. Bentuk huruf berubah menurut posisinya: awal, tengah, atau akhir kata."],["Akar kata","Banyak kata dibentuk dari akar tiga huruf. Contoh: k-t-b melahirkan kataba (menulis), kitāb (buku), dan maktab (kantor)."],["Langkah awal","Kenali huruf, pelajari kosakata dasar, lalu latih kata kerja lampau dan sekarang."]],
+en:[["Apa itu Bahasa Inggris?","Bahasa Inggris adalah bahasa Jermanik yang menjadi bahasa internasional untuk bisnis, ilmu pengetahuan, dan teknologi. Penuturnya ratusan juta orang di berbagai negara."],["Alfabet dan bunyi","Memakai 26 huruf Latin. Ejaan sering tidak sama dengan bunyinya, jadi belajar lafal sejak awal sangat membantu."],["Pola kalimat","Susunan dasarnya Subjek – Predikat – Objek, misalnya “I read books”. Waktu ditandai perubahan kata kerja seperti read dan reads."],["Langkah awal","Mulai dari kosakata sehari-hari, biasakan membaca kalimat pendek, lalu latih mendengar dan berbicara."]]};
+const V=(id,n,nl,a,al,b,bl)=>({id,n:[n,nl],v:[[a,al],[b,bl]]}),N=(id,n,nl)=>({id,n:[n,nl]});
+const DICT=[V("pergi","ذهاب","dzahāb","ذَهَبَ","dzahaba","يَذْهَبُ","yadzhabu"),V("makan","طعام","ṭa‘ām","أَكَلَ","akala","يَأْكُلُ","ya’kulu"),V("minum","شراب","syarāb","شَرِبَ","syariba","يَشْرَبُ","yasyrabu"),V("tulis","كتابة","kitābah","كَتَبَ","kataba","يَكْتُبُ","yaktubu"),V("baca","قراءة","qirā’ah","قَرَأَ","qara’a","يَقْرَأُ","yaqra’u"),V("belajar","دراسة","dirāsah","دَرَسَ","darasa","يَدْرُسُ","yadrusu"),V("datang","مجيء","majī’","جَاءَ","jā’a","يَجِيءُ","yajī’u"),V("duduk","جلوس","julūs","جَلَسَ","jalasa","يَجْلِسُ","yajlisu"),V("tidur","نوم","naum","نَامَ","nāma","يَنَامُ","yanāmu"),V("buka","فتح","fath","فَتَحَ","fataha","يَفْتَحُ","yaftahu"),N("besar","كبير","kabīr"),N("baik","جيد","jayyid"),N("indah","جميل","jamīl"),N("buku","كتاب","kitāb"),N("rumah","بيت","bait"),N("air","ماء","mā’"),N("teman","صديق","shadīq")];
+const CATS={hewan:{n:"Hewan",ar:[["قطة","qiththah","kucing"],["كلب","kalb","anjing"],["طائر","ṭā’ir","burung"],["سمك","samak","ikan"],["حصان","hishān","kuda"],["أسد","asad","singa"],["بقرة","baqarah","sapi"],["دجاجة","dajājah","ayam"]],en:[["cat","","kucing"],["dog","","anjing"],["bird","","burung"],["fish","","ikan"],["horse","","kuda"],["lion","","singa"]]},
+buah:{n:"Buah",ar:[["تفاح","tuffāḥ","apel"],["موز","mauz","pisang"],["برتقال","burtuqāl","jeruk"],["عنب","‘inab","anggur"],["بطيخ","baṭṭīkh","semangka"],["تمر","tamr","kurma"],["مانجو","mānjū","mangga"],["فراولة","farāwilah","stroberi"]],en:[["apple","","apel"],["banana","","pisang"],["orange","","jeruk"],["grape","","anggur"],["watermelon","","semangka"],["mango","","mangga"]]},
+barang:{n:"Barang (baju, alat tulis, alat kerja)",ar:[["قميص","qamīṣ","baju"],["حذاء","ḥidzā’","sepatu"],["قبعة","qubba‘ah","topi"],["قلم","qalam","pena"],["كتاب","kitāb","buku"],["حقيبة","ḥaqībah","tas"],["مطرقة","miṭraqah","palu"],["مقص","miqash","gunting"]],en:[["shirt","","baju"],["shoes","","sepatu"],["hat","","topi"],["pen","","pena"],["bag","","tas"],["hammer","","palu"]]},
+tempat:{n:"Transportasi & gedung",ar:[["سيارة","sayyārah","mobil"],["حافلة","ḥāfilah","bus"],["سفينة","safīnah","kapal"],["طائرة","ṭā’irah","pesawat"],["مدرسة","madrasah","sekolah"],["مستشفى","mustasyfā","rumah sakit"],["مسجد","masjid","masjid"],["سوق","sūq","pasar"]],en:[["car","","mobil"],["bus","","bus"],["ship","","kapal"],["airplane","","pesawat"],["school","","sekolah"],["hospital","","rumah sakit"]]}};
+let cat=null,pq=null,pp=null;
+`pena|قلم|qalam|أقلام|aqlām|sekolah
+pensil|قلم الرصاص|qalam ar-raṣāṣ|أقلام الرصاص|aqlām ar-raṣāṣ|sekolah
+penggaris|مسطرة|misṭarah|مساطر|masāṭir|sekolah
+kertas|ورقة|waraqah|أوراق|awrāq|sekolah
+papan tulis|سبورة|sabbūrah|سبورات|sabbūrāt|sekolah
+kamus|قاموس|qāmūs|قواميس|qawāmīs|sekolah
+kursi|كرسي|kursī|كراسي|karāsī|sekolah
+meja|مكتب|maktab|مكاتب|makātib|sekolah
+tas|شنطة|syanṭah|شنط|syunaṭ|sekolah
+gunting|مقص|miqashsh|مقصات|miqashshāt|sekolah
+peta|خريطة|kharīṭah|خرائط|kharā’iṭ|sekolah
+buku catatan|كراسة|kurrāsah|كراريس|karārīs|sekolah
+komputer|حاسوب|ḥāsūb|حواسيب|ḥawāsīb|sekolah
+pintu|باب|bāb|أبواب|abwāb|
+jendela|نافذة|nāfidzah|نوافذ|nawāfidz|
+jam|ساعة|sā‘ah|ساعات|sā‘āt|
+cermin|مرآة|mir’āh|مرايا|marāyā|
+kunci|مفتاح|miftāḥ|مفاتيح|mafātīḥ|
+lemari|خزانة|khizānah|خزائن|khazā’in|
+tempat tidur|سرير|sarīr|أسرّة|asirrah|
+bantal|وسادة|wisādah|وسائد|wasā’id|
+selimut|بطانية|baṭṭāniyyah|بطانيات|baṭṭāniyyāt|
+kulkas|ثلاجة|tsallājah|ثلاجات|tsallājāt|
+piring|صحن|ṣaḥn|صحون|ṣuḥūn|
+sendok|ملعقة|mil‘aqah|ملاعق|malā‘iq|
+pisau|سكين|sikkīn|سكاكين|sakākīn|
+gelas|كأس|ka’s|كؤوس|ku’ūs|
+panci|قدر|qidr|قدور|qudūr|
+kompor|موقد|mauqid|مواقد|mawāqid|
+dapur|مطبخ|maṭbakh|مطابخ|maṭābikh|
+telepon|هاتف|hātif|هواتف|hawātif|
+sepatu|حذاء|ḥidzā’|أحذية|aḥdziyah|
+kemeja|قميص|qamīṣ|قمصان|qumṣān|
+kacamata|نظارة|naẓẓārah|نظارات|naẓẓārāt|
+dompet|محفظة|maḥfaẓah|محافظ|maḥāfiẓ|
+payung|مظلة|miẓallah|مظلات|miẓallāt|
+cincin|خاتم|khātam|خواتم|khawātim|
+kalung|قلادة|qilādah|قلائد|qalā’id|
+sandal|نعل|na‘l|نعال|ni‘āl|
+roti|خبز|khubz|||
+nasi|أرز|aruzz|||
+daging|لحم|laḥm|لحوم|luḥūm|
+ikan|سمك|samak|أسماك|asmāk|
+telur|بيضة|baiḍah|بيض|baiḍ|
+susu|لبن|laban|ألبان|albān|
+gula|سكر|sukkar|||
+garam|ملح|milḥ|||
+kopi|قهوة|qahwah|||
+teh|شاي|syāy|||
+bawang|بصل|baṣal|||
+kentang|بطاطس|baṭāṭis|||
+tomat|طماطم|ṭamāṭim|||
+wortel|جزر|jazar|||
+mentimun|خيار|khiyār|||
+anjing|كلب|kalb|كلاب|kilāb|
+kucing|قطة|qiṭṭah|قطط|qiṭaṭ|
+gajah|فيل|fīl|أفيال|afyāl|
+singa|أسد|asad|أسود|usūd|
+harimau|نمر|namir|نمور|numūr|
+unta|جمل|jamal|جمال|jimāl|
+kelinci|أرنب|arnab|أرانب|arānib|
+ular|ثعبان|tsu‘bān|ثعابين|tsa‘ābīn|
+tikus|فأر|fa’r|فئران|fi’rān|
+monyet|قرد|qird|قرود|qurūd|
+burung|عصفور|‘uṣfūr|عصافير|‘aṣāfīr|
+matahari|شمس|syams|||
+bulan|قمر|qamar|أقمار|aqmār|
+bintang|نجم|najm|نجوم|nujūm|
+langit|سماء|samā’|سماوات|samāwāt|
+hujan|مطر|maṭar|أمطار|amṭār|
+angin|ريح|rīḥ|رياح|riyāḥ|
+awan|سحاب|saḥāb|سحب|suḥub|
+gunung|جبل|jabal|جبال|jibāl|
+sungai|نهر|nahr|أنهار|anhār|
+laut|بحر|baḥr|بحار|biḥār|
+pulau|جزيرة|jazīrah|جزر|juzur|
+hutan|غابة|ghābah|غابات|ghābāt|
+bunga|زهرة|zahrah|أزهار|azhār|
+pohon|شجرة|syajarah|أشجار|asyjār|
+batu|حجر|ḥajar|أحجار|aḥjār|
+pasir|رمل|raml|رمال|rimāl|
+emas|ذهب|dzahab|||
+perak|فضة|fiḍḍah|||
+besi|حديد|ḥadīd|||
+kepala|رأس|ra’s|رؤوس|ru’ūs|tubuh
+mata|عين|‘ain|عيون|‘uyūn|tubuh
+telinga|أذن|udzun|آذان|ādzān|tubuh
+hidung|أنف|anf|أنوف|unūf|tubuh
+mulut|فم|fam|أفواه|afwāh|tubuh
+gigi|سن|sinn|أسنان|asnān|tubuh
+lidah|لسان|lisān|ألسن|alsun|tubuh
+tangan|يد|yad|أيدٍ|aydin|tubuh
+kaki|رجل|rijl|أرجل|arjul|tubuh
+leher|عنق|‘unuq|أعناق|a‘nāq|tubuh
+perut|بطن|baṭn|بطون|buṭūn|tubuh
+punggung|ظهر|ẓahr|ظهور|ẓuhūr|tubuh
+jari|إصبع|iṣba‘|أصابع|aṣābi‘|tubuh
+rambut|شعر|sya‘r|شعور|syu‘ūr|tubuh
+wajah|وجه|wajh|وجوه|wujūh|tubuh
+darah|دم|dam|دماء|dimā’|tubuh
+kulit|جلد|jild|جلود|julūd|tubuh
+ayah|أب|ab|آباء|ābā’|keluarga
+ibu|أم|umm|أمهات|ummahāt|keluarga
+putra|ابن|ibn|أبناء|abnā’|keluarga
+putri|بنت|bint|بنات|banāt|keluarga
+saudara laki-laki|أخ|akh|إخوة|ikhwah|keluarga
+saudara perempuan|أخت|ukht|أخوات|akhawāt|keluarga
+suami|زوج|zawj|أزواج|azwāj|keluarga
+istri|زوجة|zawjah|زوجات|zawjāt|keluarga
+kakek|جد|jadd|أجداد|ajdād|keluarga
+nenek|جدة|jaddah|جدات|jaddāt|keluarga
+paman dari ayah|عم|‘amm|أعمام|a‘mām|keluarga
+paman dari ibu|خال|khāl|أخوال|akhwāl|keluarga
+bibi dari ayah|عمة|‘ammah|عمات|‘ammāt|keluarga
+bibi dari ibu|خالة|khālah|خالات|khālāt|keluarga
+guru|معلم|mu‘allim|معلمون|mu‘allimūn|profesi
+dokter|طبيب|ṭabīb|أطباء|aṭibbā’|profesi
+insinyur|مهندس|muhandis|مهندسون|muhandisūn|profesi
+polisi|شرطي|syurṭī|شرطيون|syurṭiyyūn|profesi
+petani|فلاح|fallāḥ|فلاحون|fallāḥūn|profesi
+pedagang|تاجر|tājir|تجار|tujjār|profesi
+sopir|سائق|sā’iq|سائقون|sā’iqūn|profesi
+hakim|قاض|qāḍin|قضاة|quḍāh|profesi
+perawat|ممرضة|mumarriḍah|ممرضات|mumarriḍāt|profesi
+tentara|جندي|jundī|جنود|junūd|profesi
+penulis|كاتب|kātib|كتاب|kuttāb|profesi
+pelukis|رسام|rassām|رسامون|rassāmūn|profesi
+menteri|وزير|wazīr|وزراء|wuzarā’|profesi
+raja|ملك|malik|ملوك|mulūk|profesi
+mahasiswa|طالب|ṭālib|طلاب|ṭullāb|profesi
+masjid|مسجد|masjid|مساجد|masājid|
+sekolah|مدرسة|madrasah|مدارس|madāris|
+rumah sakit|مستشفى|mustasyfā|مستشفيات|mustasyfayāt|
+pasar|سوق|sūq|أسواق|aswāq|
+kota|مدينة|madīnah|مدن|mudun|
+desa|قرية|qaryah|قرى|qurā|
+jalan|شارع|syāri‘|شوارع|syawāri‘|
+jembatan|جسر|jisr|جسور|jusūr|
+perpustakaan|مكتبة|maktabah|مكتبات|maktabāt|
+hotel|فندق|funduq|فنادق|fanādiq|
+restoran|مطعم|maṭ‘am|مطاعم|maṭā‘im|
+kebun|حديقة|ḥadīqah|حدائق|ḥadā’iq|
+istana|قصر|qaṣr|قصور|quṣūr|
+kamar|غرفة|ghurfah|غرف|ghuraf|
+kamar mandi|حمام|ḥammām|حمامات|ḥammāmāt|
+universitas|جامعة|jāmi‘ah|جامعات|jāmi‘āt|
+mobil|سيارة|sayyārah|سيارات|sayyārāt|
+kereta api|قطار|qiṭār|قطارات|qiṭārāt|
+kapal|سفينة|safīnah|سفن|sufun|
+pesawat|طائرة|ṭā’irah|طائرات|ṭā’irāt|
+sepeda|دراجة|darrājah|دراجات|darrājāt|
+perahu|قارب|qārib|قوارب|qawārib|
+banyak|كثير|kathīr|||
+baru|جديد|jadīd|||
+bersih|نظيف|naẓīf|||
+kecil|صغير|ṣaghīr|||
+panjang|طويل|ṭawīl|||
+pendek|قصير|qaṣīr|||
+mahal|غالٍ|ghālin|||
+murah|رخيص|rakhīṣ|||
+cepat|سريع|sarī‘|||
+lambat|بطيء|baṭī’|||
+kuat|قوي|qawī|||
+mudah|سهل|sahl|||
+sulit|صعب|ṣa‘b|||
+dekat|قريب|qarīb|||
+jauh|بعيد|ba‘īd|||
+kaya|غني|ghanī|||
+miskin|فقير|faqīr|||
+manis|حلو|ḥulw|||
+pahit|مر|murr|||
+dingin|بارد|bārid|||
+benar|صحيح|ṣaḥīḥ|||
+rajin|مجتهد|mujtahid|||
+tinggi|مرتفع|murtafi‘|||`.split("\n").forEach(l=>{const a=l.split("|");DICT.push({id:a[0],n:[a[1],a[2]],p:a[3]?[a[3],a[4]]:null,c:a[5]||""})});
+[["sekolah","Alat sekolah"],["tubuh","Anggota tubuh"],["keluarga","Keluarga"],["profesi","Profesi"]].forEach(([k,n])=>{CATS[k]={n,ar:DICT.filter(e=>e.c===k).map(e=>[e.n[0],e.n[1],e.id]),en:[]}});
+function mk(L){const w=L[Math.random()*L.length|0],o=[w[2]];while(o.length<4){const a=L[Math.random()*L.length|0][2];if(!o.includes(a))o.push(a)}return{w,o:o.sort(()=>Math.random()-.5)}}
+function pans(a){if(pp!==null)return;pp=a;if(a===pq.w[2]){S.xp[lang]+=10;S.ok[lang]++;push()}save();render()}
+const MS=[["Jawab 10 soal dengan benar","ok",10],["Kumpulkan 100 XP","xp",100],["Simpan 5 kata favorit","sv",5]];
+let S={name:"",xp:{ar:0,en:0},ok:{ar:0,en:0},sv:{ar:[],en:[]},rm:false};
+try{Object.assign(S,JSON.parse(localStorage.getItem("sq")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("sq",JSON.stringify(S))}catch(e){}};
+let view="home",lang="ar",tab="misi",q=null,pick=null,term="",board=null,db=null,uid=null;
+const $=s=>document.getElementById(s);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const lvl=x=>{let l=LV[0];LV.forEach(v=>{if(x>=v[0])l=v});return l};
+const total=()=>S.xp.ar+S.xp.en;
+function newQ(){const L=WORDS[lang].list,w=L[Math.random()*L.length|0];
+ const o=[w[2]];while(o.length<4){const a=L[Math.random()*L.length|0][2];if(!o.includes(a))o.push(a)}
+ q={w,o:o.sort(()=>Math.random()-.5)};pick=null}
+function answer(a){if(pick!==null)return;pick=a;
+ if(a===q.w[2]){S.xp[lang]+=10;S.ok[lang]++;push()}save();render()}
+function toggleSave(i){const s=S.sv[lang],k=s.indexOf(i);k<0?s.push(i):s.splice(k,1);save();render()}
+async function push(){if(!db||!uid||!S.name)return;try{await db.collection("scores").doc(uid).set({name:S.name,xp:total()})}catch(e){}}
+function progress(m){const v=m[1]==="ok"?S.ok[lang]:m[1]==="xp"?S.xp[lang]:S.sv[lang].length;return Math.min(v,m[2])}
+function home(){return`<h1>Apa yang kamu cari di sini?</h1><p class="sub">Pilih langkahmu, dan kejarlah impian itu.</p>
+<div class="grid">${MENU.map((m,i)=>`<button class="opt" data-go="${m[0]}"><span class="n">0${i+1}</span><br><b>${m[1]}</b><small>${m[2]}</small></button>`).join("")}</div>`}
+function about(){return`<h1>Tentang</h1><p class="sub">QINGS.WEB mengubah belajar bahasa menjadi misi. Kumpulkan XP, naikkan tingkat, dan bersaing di ranking.</p><div class="card" style="line-height:1.65"><p style="margin:0 0 14px;font-style:italic">Di balik gerbang kerajaan kata, ribuan huruf menunggu untuk dikenali. Bahasa Arab dengan lengkung tulisannya yang indah, Bahasa Inggris dengan jalan yang menghubungkan dunia, dan kamu berdiri di ambang pintunya.</p><p style="margin:0 0 14px">QINGS.WEB hadir untuk menemanimu melangkah dari kata pertama hingga percakapan yang lancar. Kenali asal-usul bahasanya, cari arti setiap kata di kamus, asah ingatanmu lewat latihan, lalu terima misi yang menguji sejauh mana kamu telah tumbuh.</p><p style="margin:0 0 14px">Setiap jawaban benar adalah langkah, setiap misi adalah anak tangga, dan setiap peringkat adalah jejak kerja kerasmu. Mampukah kamu melampaui yang lain dan meraih gelar Master?</p><p class="mu" style="margin:0">Dibuat oleh seorang developer yang percaya bahwa belajar bahasa bisa seasyik permainan. Kerajaan ini terus tumbuh, dengan bahasa dan petualangan baru yang akan menyusul.</p></div><button class="ghost" data-go="home">← Kembali</button>`}
+function soon(n){return`<h1>${esc(n)}</h1><p class="sub">Bagian ini belum tersedia.</p><button class="ghost" data-go="home">← Kembali</button>`}
+function quest(){const x=S.xp[lang],l=lvl(x),nx=LV.find(v=>v[0]>x);
+ let b=`<button class="ghost" data-go="home">← Kembali</button><h1 style="margin-top:14px">${WORDS[lang].name}</h1>
+<div class="row"><span class="lvl">${l[1]}</span><span class="mu">${x} XP${nx?` · ${nx[0]-x} XP lagi ke ${nx[1]}`:""}</span></div>
+<div class="tabs" role="tablist">${TABS.map(t=>`<button class="tab" role="tab" aria-selected="${tab===t[0]}" data-tab="${t[0]}">${t[1]}</button>`).join("")}</div>`;
+ if(tab==="misi"){if(!q)newQ();
+  b+=MS.map(m=>{const p=progress(m);return`<div class="card"><div class="row"><b>${m[0]}</b><span class="${p>=m[2]?"done":"mu"}">${p>=m[2]?"Selesai":p+"/"+m[2]}</span></div><div class="bar"><i style="width:${p/m[2]*100}%"></i></div></div>`}).join("");
+  b+=`<div class="card"><span class="mu">Apa arti kata ini? (+10 XP)</span><div class="word"${lang==="ar"?' dir="rtl"':""}>${esc(q.w[0])}</div>${q.w[1]?`<span class="mu">${esc(q.w[1])}</span>`:""}<div class="ans">${q.o.map((o,i)=>`<button data-a="${i}" class="${pick!==null?(o===q.w[2]?"ok":o===pick?"bad":""):""}">${esc(o)}</button>`).join("")}</div>${pick!==null?`<button class="ghost" style="margin-top:12px" data-next>Soal berikutnya →</button>`:""}</div>`}
+ if(tab==="intro")b+=INTRO[lang].map(x=>`<div class="card"><b>${x[0]}</b><p style="margin:6px 0 0">${x[1]}</p></div>`).join("");
+ if(tab==="kamus"){if(lang!=="ar")b+=`<div class="card"><p class="mu">Kamus Bahasa Inggris segera hadir.</p></div>`;else{const t=term.trim().toLowerCase(),r=t?DICT.filter(e=>e.id.includes(t)||t.includes(e.id)).slice(0,3):[];
+  b+=`<div class="dict"><div class="card"><span class="mu">Indonesia</span><input id="s" placeholder="Ketik kata, mis. pergi" value="${esc(term)}" autocomplete="off"><div class="chips">${DICT.slice(0,6).map(e=>`<button class="ghost" data-chip="${e.id}">${e.id}</button>`).join("")}</div></div><div class="card"><span class="mu">Arab</span>${!t?`<p class="mu">Terjemahan muncul di sini.</p>`:!r.length?`<p class="mu">Kata belum ada di kamus.</p>`:r.map(e=>`<span class="lb">KATA BENDA / SIFAT</span><div class="ar" dir="rtl">${e.n[0]}</div><span class="mu">${e.n[1]}</span>${e.p?`<span class="lb">JAMAK</span><div class="ar" dir="rtl">${e.p[0]}</div><span class="mu">${e.p[1]}</span>`:""}${e.v?`<span class="lb">KATA KERJA</span><div class="ar" dir="rtl">${e.v[0][0]}</div><span class="mu">${e.v[0][1]} · telah ${e.id}</span><div class="ar" dir="rtl">${e.v[1][0]}</div><span class="mu">${e.v[1][1]} · sedang ${e.id}</span>`:""}`).join("<hr style='border:0;border-top:1px solid var(--line)'>")}</div></div>`}}
+ if(tab==="latihan"){if(!cat)b+=`<p class="sub">Pilih kelompok kosakata.</p><div class="grid">${Object.keys(CATS).filter(k=>CATS[k][lang].length>3).map(k=>`<button class="opt" data-cat="${k}"><b>${CATS[k].n}</b><small>${CATS[k][lang].length} kata</small></button>`).join("")}</div>`;
+  else b+=`<button class="ghost" data-back>← Kelompok lain</button><div class="card" style="margin-top:12px"><span class="mu">${CATS[cat].n} · apa artinya? (+10 XP)</span><div class="word"${lang==="ar"?' dir="rtl"':""}>${esc(pq.w[0])}</div>${pq.w[1]?`<span class="mu">${esc(pq.w[1])}</span>`:""}<div class="ans">${pq.o.map((o,i)=>`<button data-pa="${i}" class="${pp!==null?(o===pq.w[2]?"ok":o===pp?"bad":""):""}">${esc(o)}</button>`).join("")}</div>${pp!==null?`<button class="ghost" style="margin-top:12px" data-pn>Soal berikutnya →</button>`:""}</div>`}
+ if(tab==="ranking"){
+  b+=`<div class="card"><span class="mu">Nama di ranking</span><input id="nm" maxlength="16" placeholder="Nama panggilan" value="${esc(S.name)}"></div>`;
+  b+=board?`<div class="card"><ol>${board.map(r=>`<li class="row"><span>${esc(r.name)}${r.me?" (kamu)":""}</span><b>${r.xp} XP</b></li>`).join("")||"<li>Belum ada peserta.</li>"}</ol></div><p class="mu">Skor total semua bahasa. Siapa pun bisa melampauimu.</p>`:`<div class="card"><p class="mu">Ranking bersama butuh akun. Skor total kamu: <b>${total()} XP</b> (tersimpan di perangkat ini).</p></div>`}
+ return b}
+function render(){const a=document.activeElement&&document.activeElement.id,v=a?document.activeElement.value:"";
+ let h=view==="home"?home():view==="about"?about():view==="quest"?quest():soon(MENU.find(m=>m[0]===view)[1]);
+ $("app").innerHTML=`<header><b>QINGS.WEB</b><button class="ghost" data-rm>${S.rm?"Gerak: kurangi":"Kurangi gerak"}</button></header>`+h;
+ document.documentElement.classList.toggle("rm",S.rm);
+ if(a&&$(a)){$(a).focus();try{$(a).setSelectionRange(v.length,v.length)}catch(e){}}}
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;const d=t.dataset;
+ if(d.go){view=["ar","en"].includes(d.go)?"quest":d.go;if(view==="quest"){lang=d.go;tab="intro";q=null;cat=null}render()}
+ else if(d.tab){tab=d.tab;cat=null;render()}else if(d.cat){cat=d.cat;pq=mk(CATS[cat][lang]);pp=null;render()}else if(d.back!==undefined){cat=null;render()}else if(d.pa!==undefined)pans(pq.o[+d.pa]);else if("pn"in d){pq=mk(CATS[cat][lang]);pp=null;render()}else if(d.chip){term=d.chip;render()}else if(d.a!==undefined)answer(q.o[+d.a]);
+ else if("next"in d){newQ();render()}else if(d.sv!==undefined)toggleSave(+d.sv);
+ else if("rm"in d){S.rm=!S.rm;save();render()}});
+document.addEventListener("input",e=>{if(e.target.id==="s"){term=e.target.value;render()}
+ if(e.target.id==="nm"){S.name=e.target.value.trim();save();clearTimeout(window._t);window._t=setTimeout(push,600)}});
+function listen(){if(!db)return;try{db.collection("scores").orderBy("xp","desc").limit(10).onSnapshot(s=>{board=s.docs.map(d=>({name:d.data().name||"Anonim",xp:d.data().xp||0,me:d.id===uid}));if(tab==="ranking"&&document.activeElement.id!=="nm")render()},()=>{})}catch(e){}}
+render();
+(async()=>{try{db=await claude.use("db");const u=await claude.use("user");if(db&&u){uid=await u.id();listen();push()}}catch(e){db=null}})();
+</script></body></html>
