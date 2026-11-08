@@ -1,5 +1,5 @@
 ## Hi there 👋
-
+## https://www.almaany.com/id/dict/ar-id/arab-ke-indonesia/
 <!--
 **QINGSWEB/QINGSWEB** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
